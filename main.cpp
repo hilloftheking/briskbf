@@ -24,18 +24,12 @@ int main(int argc, char* argv[]) {
 		std::cin >> fileName;
 	}
 
-	std::ifstream fs{ fileName };
+	std::ifstream script{ fileName };
 
-	if (!fs.is_open()) {
+	if (!script.is_open()) {
 		std::cerr << "File " << fileName << " not found. Aborting.\n";
 		return -1;
 	}
-
-	// Read the specified file into a string
-	std::stringstream scriptstream;
-	scriptstream << fs.rdbuf();
-	std::string script = scriptstream.str();
-	fs.close();
 
 	// Tokenize script for much better performance
 	auto tokens = Tokenizer::tokenize(script);
