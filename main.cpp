@@ -5,37 +5,81 @@
 #include <string>
 #include <chrono>
 #include <ratio>
+#include <cstring>
+#include <exception>
 #include "globals.hpp"
 #include "interpreter.hpp"
 #include "tokenizer.hpp"
 
-const uint64_t CELLS_SIZE = 30'000;
+// This can be changed through arguments
+uint64_t CELLS_SIZE = 30'000;
 
 std::shared_ptr<unsigned char[]> cells;
 uint64_t pointer;
 
 int main(int argc, char* argv[]) {
 	std::string fileName;
-	if (argc > 1) { // argv always has the program name
-		fileName = argv[1];
+
+	// Parse arguments
+	bool printHelp = false;
+	for (int i = 1; i < argc; i++) {
+		// Process arguments before last (file name)
+		if (i != argc - 1) {
+			std::string arg{ argv[i], 0, 2 };
+
+			if (arg == "-h") {
+				printHelp = true;
+				break;
+			}
+			else {
+				int number = std::stoi(std::string{ argv[i], 2, strlen(argv[i]) });
+
+				if (arg == "-c") {
+					CELLS_SIZE = number;
+				}
+				else if (arg == "-s") {
+					// TODO: More character types
+				}
+				else {
+					std::cerr << "Invalid argument.\n";
+					return 1;
+				}
+
+				std::cout << number << '\n'; // Debug purposes
+			}
+		}
+		else {
+			// File name, or help
+			if (strcmp(argv[i], "-h") == 0) {
+				printHelp = true;
+				break;
+			}
+			fileName = argv[i];
+		}
 	}
-	else {
+
+	if (printHelp) {
+		std::cout << "Usage: bf-interpret [options] [file]\n"
+			<< "-h    print this menu.\n"
+			<< "-c    cell amount. default = 30000\n"
+			<< "-s    cell size (8, 16, 32). default = 8\n"
+			<< "\nExample: bf-interpret -c20 -s32 helloworld.bf\n";
+
+		return 1;
+	}
+
+	if (fileName == "") {
+		// Allow user to input file
 		std::cout << "File name: ";
 		std::cin >> fileName;
 	}
 
-	std::ifstream fs{ fileName };
+	std::ifstream script{ fileName };
 
-	if (!fs.is_open()) {
+	if (!script.is_open()) {
 		std::cerr << "File " << fileName << " not found. Aborting.\n";
 		return -1;
 	}
-
-	// Read the specified file into a string
-	std::stringstream scriptstream;
-	scriptstream << fs.rdbuf();
-	std::string script = scriptstream.str();
-	fs.close();
 
 	// Tokenize script for much better performance
 	auto tokens = Tokenizer::tokenize(script);
@@ -47,7 +91,14 @@ int main(int argc, char* argv[]) {
 
 	// Execute the tokens
 	auto start = std::chrono::high_resolution_clock::now();
-	Interpreter::executeTokens(tokens);
+
+	try {
+		Interpreter::executeTokens(tokens);
+	}
+	catch (const std::exception& e) {
+		std::cerr << "Execution failed: " << e.what() << '\n';
+		return 1;
+	}
 
 	// Output execution time
 	std::cout << "\nExecution finished in "

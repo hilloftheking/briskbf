@@ -1,10 +1,10 @@
 #include <vector>
 #include <optional>
-#include <string>
+#include <fstream>
 #include "tokenizer.hpp"
 
 namespace Tokenizer {
-	std::vector<Token> tokenize(const std::string& script) {
+	std::vector<Token> tokenize(std::ifstream& script) {
 		std::vector<Token> tokens;
 		std::vector<int> loopBegin;
 
@@ -14,8 +14,8 @@ namespace Tokenizer {
 
 		using enum TokenType;
 
-		for (int i = 0; i < script.size(); i++) {
-			c = script[i];
+		while (script.good()) {
+			script.get(c);
 
 			switch (c) {
 			case '+':

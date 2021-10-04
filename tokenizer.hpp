@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include <string>
+#include <fstream>
 
 namespace Tokenizer {
 	enum class TokenType : int {
@@ -20,5 +20,5 @@ namespace Tokenizer {
 		int data; // Repetitions for non loops, loop counterpart position for loops
 	};
 
-	std::vector<Token> tokenize(const std::string& script);
+	std::vector<Token> tokenize(std::ifstream& script);
 };
