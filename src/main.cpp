@@ -13,10 +13,10 @@
 #include "tokenizer.hpp"
 
 // This can be changed through arguments
-uint64_t CELL_AMOUNT = 30'000;
+unsigned int CELL_AMOUNT = 30'000;
 
 std::shared_ptr<unsigned char[]> cells;
-uint64_t pointer;
+unsigned int pointer;
 
 int main(int argc, char* argv[]) {
 	std::string fileName;
@@ -42,15 +42,24 @@ int main(int argc, char* argv[]) {
 				break;
 			}
 			else if (argPre == "-i") {
+				// Disabled for now
 				// Custom std::cin
-				auto* input = new std::stringstream;
-				*input << arg << '\n';
+				//auto* input = new std::stringstream;
+				//*input << arg << '\n';
 
-				std::cin.set_rdbuf(input->rdbuf());
+				//std::cin.set_rdbuf(input->rdbuf());
 			}
 			else {
-				// Messy but works
-				int number = std::stoi(std::string{ arg });
+				// These arguments take a number parameter.
+				unsigned int number;
+
+				try {
+					number = std::stoul(std::string{ arg });
+				}
+				catch (const std::exception& e) {
+					std::cerr << "Invalid argument: " << e.what() << '\n';
+					return 1;
+				}
 
 				if (argPre == "-c") {
 					// Cell count
@@ -60,13 +69,11 @@ int main(int argc, char* argv[]) {
 					std::cerr << "Invalid argument.\n";
 					return 1;
 				}
-
-				std::cout << number << '\n'; // Debug purposes
 			}
 		}
 		else {
 			// File name, or help
-			if (strcmp(argv[i], "-h") == 0) {
+			if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
 				printHelp = true;
 				break;
 			}
@@ -77,9 +84,9 @@ int main(int argc, char* argv[]) {
 	if (printHelp) {
 		std::cout << "Usage: bbf [options] [file]\n"
 			<< "-h    print this menu.\n"
-			<< "-i    write custom characters to std::cin for debugging\n"
-			<< "-s    cell size (8, 16, 32). default = 8\n"
-			<< "\nExample: bbf -i200 -s30000 primes.bf\n";
+			<< "-c    cell amount. default=30000\n"
+			// << "-i    write custom characters to std::cin for debugging\n"
+			<< "\nExample: bbf -c1000 -i200 primes.bf\n";
 
 		return 1;
 	}
@@ -94,7 +101,7 @@ int main(int argc, char* argv[]) {
 
 	if (!script.is_open()) {
 		std::cerr << "File " << fileName << " not found. Aborting.\n";
-		return -1;
+		return 1;
 	}
 
 	// Tokenize script for much better performance
@@ -116,9 +123,11 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 
+	double time = std::chrono::duration<double, std::milli>(
+		std::chrono::high_resolution_clock::now() - start).count();
+
 	// Output execution time
 	std::cout << "\nExecution finished in "
-		<< std::chrono::duration<double, std::milli>(
-			std::chrono::high_resolution_clock::now() - start)
-		<< '\n';
+		<< time
+		<< "ms \n";
 }

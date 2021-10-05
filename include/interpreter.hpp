@@ -6,4 +6,4 @@
 
 namespace Interpreter {
 	void executeTokens(const std::vector<Tokenizer::Token>& tokens);
-};
+}

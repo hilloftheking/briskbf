@@ -162,7 +162,12 @@
     <ClInclude Include="include\tokenizer.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="briskbf.sln" />
+    <None Include="briskbf.vcxproj" />
     <None Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

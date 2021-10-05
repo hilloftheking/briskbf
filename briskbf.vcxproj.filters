@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Build Files">
+      <UniqueIdentifier>{6c7c7e95-5178-41c5-a994-608704a1650f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -40,5 +43,16 @@
     <None Include="README.md">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="briskbf.sln">
+      <Filter>Build Files</Filter>
+    </None>
+    <None Include="briskbf.vcxproj">
+      <Filter>Build Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt">
+      <Filter>Build Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

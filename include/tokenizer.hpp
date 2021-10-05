@@ -21,4 +21,4 @@ namespace Tokenizer {
 	};
 
 	std::vector<Token> tokenize(std::ifstream& script);
-};
+}

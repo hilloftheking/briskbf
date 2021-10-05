@@ -12,7 +12,7 @@ namespace Interpreter {
 
 	// Executes a vector of tokens created from a brainfuck script
 	void executeTokens(const std::vector<Tokenizer::Token>& tokens) {
-		for (int i = 0; i < tokens.size(); i++) {
+		for (size_t i = 0; i < tokens.size(); i++) {
 			auto& tok = tokens[i];
 
 			switch (tok.type) {
@@ -68,4 +68,4 @@ namespace Interpreter {
 			}
 		}
 	}
-};
+}

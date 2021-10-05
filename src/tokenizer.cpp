@@ -10,7 +10,7 @@ namespace Tokenizer {
 
 		char c;
 		std::optional<TokenType> tt;
-		Token* prevToken = (Token*)0;
+		Token* prevToken = NULL;
 
 		using enum TokenType;
 
@@ -77,4 +77,4 @@ namespace Tokenizer {
 
 		return tokens;
 	}
-};
+}
