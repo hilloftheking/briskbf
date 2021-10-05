@@ -8,7 +8,8 @@
 #include "tokenizer.hpp"
 
 namespace Interpreter {
-	using enum Tokenizer::TokenType;
+	// I would do using enum here, but g++10 does not support it.
+	using namespace Tokenizer;
 
 	// Executes a vector of tokens created from a brainfuck script
 	void executeTokens(const std::vector<Tokenizer::Token>& tokens) {
@@ -16,13 +17,13 @@ namespace Interpreter {
 			auto& tok = tokens[i];
 
 			switch (tok.type) {
-			case increment:
+			case TokenType::increment:
 				cells[pointer] += tok.data;
 				break;
-			case decrement:
+			case TokenType::decrement:
 				cells[pointer] -= tok.data;
 				break;
-			case moveright:
+			case TokenType::moveright:
 				pointer += tok.data;
 
 				// Overflow check
@@ -31,7 +32,7 @@ namespace Interpreter {
 				}
 
 				break;
-			case moveleft:
+			case TokenType::moveleft:
 				pointer -= tok.data;
 				
 				// Underflow check
@@ -43,23 +44,23 @@ namespace Interpreter {
 				}
 
 				break;
-			case output:
+			case TokenType::output:
 				for (int i = 0; i < tok.data; i++) {
 					std::cout << cells[pointer];
 				}
 				break;
-			case input:
+			case TokenType::input:
 				for (int i = 0; i < tok.data; i++) {
 					cells[pointer] = std::cin.get();
 				}
 				break;
-			case loopbegin:
+			case TokenType::loopbegin:
 				if (cells[pointer] == 0) {
 					// skip loop
 					i = tok.data; // data holds position of loop end
 				}
 				break;
-			case loopend:
+			case TokenType::loopend:
 				if (cells[pointer] != 0) {
 					// continue loop
 					i = tok.data; // data holds loop begin position

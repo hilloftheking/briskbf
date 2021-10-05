@@ -12,36 +12,36 @@ namespace Tokenizer {
 		std::optional<TokenType> tt;
 		Token* prevToken = NULL;
 
-		using enum TokenType;
+		// I would do using enum here, but g++10 does not support it.
 
 		while (script.good()) {
 			script.get(c);
 
 			switch (c) {
 			case '+':
-				tt = increment;
+				tt = TokenType::increment;
 				break;
 			case '-':
-				tt = decrement;
+				tt = TokenType::decrement;
 				break;
 			case '>':
-				tt = moveright;
+				tt = TokenType::moveright;
 				break;
 			case '<':
-				tt = moveleft;
+				tt = TokenType::moveleft;
 				break;
 			case '.':
-				tt = output;
+				tt = TokenType::output;
 				break;
 			case ',':
-				tt = input;
+				tt = TokenType::input;
 				break;
 			case '[':
-				tt = loopbegin;
+				tt = TokenType::loopbegin;
 				loopBegin.push_back(tokens.size()); // Push what the position of this opening bracket will be
 				break;
 			case ']':
-				tt = loopend;
+				tt = TokenType::loopend;
 				break;
 			default:
 				tt.reset();
@@ -52,11 +52,11 @@ namespace Tokenizer {
 				continue;
 			}
 
-			if (tt == loopbegin) {
+			if (tt == TokenType::loopbegin) {
 				// The data in this will be filled out later by the loopend token.
 				tokens.push_back(Token{ tt.value(), 0 });
 			}
-			else if (tt == loopend) {
+			else if (tt == TokenType::loopend) {
 				// Push back the loopend token, with data pointing to loopbegin.
 				tokens.push_back(Token{ tt.value(), loopBegin.back() });
 				// Set the loopbegin token's data to the position of this loopend, and pop the back of the loopBegin vector.
