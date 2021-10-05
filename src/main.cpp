@@ -86,7 +86,7 @@ int main(int argc, char* argv[]) {
 			<< "-h    print this menu.\n"
 			<< "-c    cell amount. default=30000\n"
 			// << "-i    write custom characters to std::cin for debugging\n"
-			<< "\nExample: bbf -c1000 -i200 primes.bf\n";
+			<< "\nExample: bbf -c1000 mandel.bf\n";
 
 		return 1;
 	}
