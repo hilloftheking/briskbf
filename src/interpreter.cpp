@@ -26,8 +26,8 @@ namespace Interpreter {
 				pointer += tok.data;
 
 				// Overflow check
-				if (pointer >= CELLS_SIZE) {
-					pointer = pointer % CELLS_SIZE;
+				if (pointer >= CELL_AMOUNT) {
+					pointer = pointer % CELL_AMOUNT;
 				}
 
 				break;
@@ -36,10 +36,10 @@ namespace Interpreter {
 				
 				// Underflow check
 				// Unsigned numbers wrap to max
-				if (pointer >= CELLS_SIZE) {
+				if (pointer >= CELL_AMOUNT) {
 					// Subtract the amount to underflow from the maximum cell
-					pointer = (CELLS_SIZE - 1) - (UINT64_MAX - pointer);
-					pointer %= CELLS_SIZE; // double check that it is in bounds
+					pointer = (CELL_AMOUNT - 1) - (UINT64_MAX - pointer);
+					pointer %= CELL_AMOUNT; // double check that it is in bounds
 				}
 
 				break;

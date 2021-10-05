@@ -3,6 +3,7 @@
 #include <memory>
 #include <sstream>
 #include <string>
+#include <string_view>
 #include <chrono>
 #include <ratio>
 #include <cstring>
@@ -12,7 +13,7 @@
 #include "tokenizer.hpp"
 
 // This can be changed through arguments
-uint64_t CELLS_SIZE = 30'000;
+uint64_t CELL_AMOUNT = 30'000;
 
 std::shared_ptr<unsigned char[]> cells;
 uint64_t pointer;
@@ -25,19 +26,38 @@ int main(int argc, char* argv[]) {
 	for (int i = 1; i < argc; i++) {
 		// Process arguments before last (file name)
 		if (i != argc - 1) {
-			std::string arg{ argv[i], 0, 2 };
+			auto argSize = strlen(argv[i]);
 
-			if (arg == "-h") {
+			// Argument prefix
+			std::string_view argPre{ argv[i] };
+			argPre.remove_suffix(argSize - 2);
+
+			// Argument value
+			std::string_view arg{ argv[i] };
+			arg.remove_prefix(2);
+
+			if (argPre == "-h") {
+				// Help
 				printHelp = true;
 				break;
 			}
-			else {
-				int number = std::stoi(std::string{ argv[i], 2, strlen(argv[i]) });
+			else if (argPre == "-i") {
+				// Custom std::cin
+				auto* input = new std::stringstream;
+				*input << arg << '\n';
 
-				if (arg == "-c") {
-					CELLS_SIZE = number;
+				std::cin.set_rdbuf(input->rdbuf());
+			}
+			else {
+				// Messy but works
+				int number = std::stoi(std::string{ arg });
+
+				if (argPre == "-c") {
+					// Cell count
+					CELL_AMOUNT = number;
 				}
-				else if (arg == "-s") {
+				else if (argPre == "-s") {
+					// Cell size
 					// TODO: More character types
 				}
 				else {
@@ -85,8 +105,8 @@ int main(int argc, char* argv[]) {
 	auto tokens = Tokenizer::tokenize(script);
 
 	// Allocate the cells onto the heap
-	cells = std::shared_ptr<unsigned char[]>(new unsigned char[CELLS_SIZE]);
-	memset(cells.get(), 0, CELLS_SIZE);
+	cells = std::shared_ptr<unsigned char[]>(new unsigned char[CELL_AMOUNT]);
+	memset(cells.get(), 0, CELL_AMOUNT);
 	pointer = 0;
 
 	// Execute the tokens
