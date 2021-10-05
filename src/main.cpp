@@ -59,11 +59,11 @@ int main(int argc, char* argv[]) {
 	}
 
 	if (printHelp) {
-		std::cout << "Usage: bf-interpret [options] [file]\n"
+		std::cout << "Usage: bbf [options] [file]\n"
 			<< "-h    print this menu.\n"
 			<< "-c    cell amount. default = 30000\n"
 			<< "-s    cell size (8, 16, 32). default = 8\n"
-			<< "\nExample: bf-interpret -c20 -s32 helloworld.bf\n";
+			<< "\nExample: bbf -c20 -s32 helloworld.bf\n";
 
 		return 1;
 	}
