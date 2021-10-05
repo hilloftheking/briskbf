@@ -56,10 +56,6 @@ int main(int argc, char* argv[]) {
 					// Cell count
 					CELL_AMOUNT = number;
 				}
-				else if (argPre == "-s") {
-					// Cell size
-					// TODO: More character types
-				}
 				else {
 					std::cerr << "Invalid argument.\n";
 					return 1;
@@ -81,9 +77,9 @@ int main(int argc, char* argv[]) {
 	if (printHelp) {
 		std::cout << "Usage: bbf [options] [file]\n"
 			<< "-h    print this menu.\n"
-			<< "-c    cell amount. default = 30000\n"
+			<< "-i    write custom characters to std::cin for debugging\n"
 			<< "-s    cell size (8, 16, 32). default = 8\n"
-			<< "\nExample: bbf -c20 -s32 helloworld.bf\n";
+			<< "\nExample: bbf -i200 -s30000 primes.bf\n";
 
 		return 1;
 	}
