@@ -15,24 +15,24 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="interpreter.cpp">
+    <ClCompile Include="src\interpreter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tokenizer.cpp">
+    <ClCompile Include="src\tokenizer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="globals.hpp">
+    <ClInclude Include="include\globals.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="interpreter.hpp">
+    <ClInclude Include="include\interpreter.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tokenizer.hpp">
+    <ClInclude Include="include\tokenizer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

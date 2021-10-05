@@ -103,5 +103,6 @@ int main(int argc, char* argv[]) {
 	// Output execution time
 	std::cout << "\nExecution finished in "
 		<< std::chrono::duration<double, std::milli>(
-			std::chrono::high_resolution_clock::now() - start) << '\n';
+			std::chrono::high_resolution_clock::now() - start)
+		<< '\n';
 }

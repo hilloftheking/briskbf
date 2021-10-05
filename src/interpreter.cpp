@@ -44,10 +44,14 @@ namespace Interpreter {
 
 				break;
 			case output:
-				std::cout << cells[pointer];
+				for (int i = 0; i < tok.data; i++) {
+					std::cout << cells[pointer];
+				}
 				break;
 			case input:
-				std::cin >> cells[pointer];
+				for (int i = 0; i < tok.data; i++) {
+					cells[pointer] = std::cin.get();
+				}
 				break;
 			case loopbegin:
 				if (cells[pointer] == 0) {
