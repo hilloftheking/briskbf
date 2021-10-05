@@ -1,2 +1,2 @@
-# bf-interpreter
-Tokenizes and interprets brainfuck scripts.
+# briskbf
+Tokenizes and interprets brainf*** (think of the children!) scripts.
