@@ -23,69 +23,60 @@ int main(int argc, char* argv[]) {
 
 	// Parse arguments
 	bool printHelp = false;
-	for (int i = 1; i < argc; i++) {
-		// Process arguments before last (file name)
-		if (i != argc - 1) {
-			auto argSize = strlen(argv[i]);
+	try {
+		for (int i = 1; i < argc; i++) {
+			// Process arguments before last (file name)
+			if (i != argc - 1) {
+				auto argSize = strlen(argv[i]);
 
-			// Argument prefix
-			std::string_view argPre{ argv[i] };
-			argPre.remove_suffix(argSize - 2);
+				// Argument prefix
+				std::string_view argPre{ argv[i] };
+				argPre.remove_suffix(argSize - 2);
 
-			// Argument value
-			std::string_view arg{ argv[i] };
-			arg.remove_prefix(2);
+				// Argument value
+				std::string_view arg{ argv[i] };
+				arg.remove_prefix(2);
 
-			if (argPre == "-h") {
-				// Help
-				printHelp = true;
-				break;
-			}
-			else if (argPre == "-i") {
-				// Disabled for now
-				// Custom std::cin
-				//auto* input = new std::stringstream;
-				//*input << arg << '\n';
-
-				//std::cin.set_rdbuf(input->rdbuf());
-			}
-			else {
-				// These arguments take a number parameter.
-				unsigned int number;
-
-				try {
-					number = std::stoul(std::string{ arg });
-				}
-				catch (const std::exception& e) {
-					std::cerr << "Invalid argument: " << e.what() << '\n';
-					return 1;
-				}
-
-				if (argPre == "-c") {
-					// Cell count
-					CELL_AMOUNT = number;
+				if (argPre == "-h") {
+					// Help
+					printHelp = true;
+					break;
 				}
 				else {
-					std::cerr << "Invalid argument.\n";
-					return 1;
+					if (argPre == "-c") {
+						unsigned int number = std::stoi(std::string{ arg });
+
+						if (number <= 0) {
+							throw std::invalid_argument{ "Cell count must be greater than 0." };
+						}
+
+						// Cell count
+						CELL_AMOUNT = number;
+					}
+					else {
+						throw std::invalid_argument{ std::string{"Unknown argument "} + argv[i] };
+					}
 				}
 			}
-		}
-		else {
-			// File name, or help
-			if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
-				printHelp = true;
-				break;
+			else {
+				// File name, or help
+				if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
+					printHelp = true;
+					break;
+				}
+				fileName = argv[i];
 			}
-			fileName = argv[i];
 		}
+	}
+	catch (const std::exception& e) {
+		std::cerr << "Error parsing arguments: " << e.what() << '\n';
+		return 1;
 	}
 
 	if (printHelp) {
 		std::cout << "Usage: bbf [options] [file]\n"
 			<< "-h    print this menu.\n"
 			<< "-c    cell amount. default=30000\n"
-			// << "-i    write custom characters to std::cin for debugging\n"
 			<< "\nExample: bbf -c1000 mandel.bf\n";
 
 		return 1;
@@ -105,28 +96,34 @@ int main(int argc, char* argv[]) {
 	}
 
 	// Tokenize script for much better performance
-	auto tokens = Tokenizer::tokenize(script);
+	std::vector<Tokenizer::Token> tokens;
+	try {
+		tokens = Tokenizer::tokenize(script);
+	}
+	catch (const std::exception& e) {
+		std::cerr << "Invalid script: " << e.what() << '\n';
+		return 1;
+	}
 
 	// Allocate the cells onto the heap
-	cells = std::shared_ptr<unsigned char[]>(new unsigned char[CELL_AMOUNT]);
-	memset(cells.get(), 0, CELL_AMOUNT);
+	try {
+		cells = std::shared_ptr<unsigned char[]>(new unsigned char[CELL_AMOUNT]);
+	}
+	catch (...) {
+		std::cerr << "Failed to allocate cells.\n";
+		return 1;
+	}
+	memset(cells.get(), '\0', CELL_AMOUNT);
 	pointer = 0;
 
 	// Execute the tokens
 	auto start = std::chrono::high_resolution_clock::now();
+	Interpreter::executeTokens(tokens);
 
-	try {
-		Interpreter::executeTokens(tokens);
-	}
-	catch (const std::exception& e) {
-		std::cerr << "Execution failed: " << e.what() << '\n';
-		return 1;
-	}
-
+	// Output execution time
 	double time = std::chrono::duration<double, std::milli>(
 		std::chrono::high_resolution_clock::now() - start).count();
 
-	// Output execution time
 	std::cout << "\nExecution finished in "
 		<< time
 		<< "ms \n";
