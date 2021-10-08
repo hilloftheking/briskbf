@@ -14,9 +14,7 @@ namespace Tokenizer {
 
 		// I would do using enum here, but g++10 does not support it.
 
-		while (script.good()) {
-			script.get(c);
-
+		while (script >> c) {
 			switch (c) {
 			case '+':
 				tt = TokenType::increment;
@@ -73,6 +71,11 @@ namespace Tokenizer {
 			}
 
 			prevToken = &tokens.back();
+		}
+
+		// Error if any loop is unclosed
+		if (!loopBegin.empty()) {
+			throw std::runtime_error{ "Unclosed loop" };
 		}
 
 		return tokens;
