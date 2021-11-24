@@ -5,7 +5,7 @@ set( CMAKE_CXX_STANDARD 20 )
 set( CMAKE_CXX_STANDARD_REQUIRED ON )
 
 if(MSVC)
-  add_compile_options( /W4 /WX /O2 )
+  add_compile_options( /W4 /O2 )
 else()
   add_compile_options( -Wall -Wextra -Wpedantic -O2 )
 endif()
