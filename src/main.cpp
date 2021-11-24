@@ -8,6 +8,7 @@
 #include <ratio>
 #include <cstring>
 #include <exception>
+#include <csignal>
 #include "globals.hpp"
 #include "interpreter.hpp"
 #include "tokenizer.hpp"
@@ -115,6 +116,10 @@ int main(int argc, char* argv[]) {
 	}
 	memset(cells.get(), '\0', CELL_AMOUNT);
 	pointer = 0;
+
+	signal(SIGINT, [](int) {
+		Interpreter::running = false;
+	});
 
 	// Execute the tokens
 	auto start = std::chrono::high_resolution_clock::now();
