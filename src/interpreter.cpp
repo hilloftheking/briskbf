@@ -8,12 +8,14 @@
 #include "tokenizer.hpp"
 
 namespace Interpreter {
-	// I would do using enum here, but g++10 does not support it.
 	using namespace Tokenizer;
+
+	bool running = false;
 
 	// Executes a vector of tokens created from a brainfuck script
 	void executeTokens(const std::vector<Tokenizer::Token>& tokens) {
-		for (size_t i = 0; i < tokens.size(); i++) {
+		running = true;
+		for (size_t i = 0; i < tokens.size() && running; i++) {
 			const auto& tok = tokens[i];
 
 			switch (tok.type) {
@@ -68,5 +70,7 @@ namespace Interpreter {
 				break;
 			}
 		}
+
+		running = false;
 	}
 }
