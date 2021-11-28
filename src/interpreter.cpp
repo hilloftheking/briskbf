@@ -1,8 +1,8 @@
-#include <iostream>
 #include <stdexcept>
 #include <string>
 #include <exception>
 #include <vector>
+#include <cstdio>
 #include "globals.hpp"
 #include "interpreter.hpp"
 #include "tokenizer.hpp"
@@ -48,12 +48,12 @@ namespace Interpreter {
 				break;
 			case TokenType::output:
 				for (int i = 0; i < tok.data; i++) {
-					std::cout << cells[pointer];
+					std::putchar(cells[pointer]);
 				}
 				break;
 			case TokenType::input:
 				for (int i = 0; i < tok.data; i++) {
-					cells[pointer] = std::cin.get();
+					cells[pointer] = std::getchar();
 				}
 				break;
 			case TokenType::loopbegin:
