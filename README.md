@@ -1,4 +1,3 @@
-[![MSBuild](https://github.com/hilloftheking/briskbf/actions/workflows/msbuild.yml/badge.svg)](https://github.com/hilloftheking/briskbf/actions/workflows/msbuild.yml)
 [![CMake](https://github.com/hilloftheking/briskbf/actions/workflows/cmake.yml/badge.svg)](https://github.com/hilloftheking/briskbf/actions/workflows/cmake.yml)
 # About
 briskbf is a basic C++ brainfuck interpreter that uses only the standard library. It takes an input file, tokenizes it, and executes it. Running Erik Bosman's mandel brainfuck script takes about 5.8 seconds to finish on my i3 10100.
