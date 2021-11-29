@@ -61,7 +61,7 @@ int main(int argc, char* argv[]) {
 			}
 			else {
 				// File name, or help
-				if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
+				if (std::strcmp(argv[i], "-h") == 0 || std::strcmp(argv[i], "--help") == 0) {
 					printHelp = true;
 					break;
 				}
@@ -114,7 +114,7 @@ int main(int argc, char* argv[]) {
 		std::cerr << "Failed to allocate cells.\n";
 		return 1;
 	}
-	memset(cells.get(), '\0', CELL_AMOUNT);
+	std::memset(cells.get(), '\0', CELL_AMOUNT);
 	pointer = 0;
 
 	signal(SIGINT, [](int) {
